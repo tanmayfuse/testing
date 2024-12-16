@@ -105,16 +105,24 @@ jobs:
       # - name: Login to Nexus
       #   run: echo ${{ secrets.NEXUS_NP_CREDS }} | docker login ${{ env.NEXUS_NP_REPO }} --username ${{ secrets.NEXUS_USERNAME }} --password-stdin
 
-      # - name: Archive Twistlock Results
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: TWISTLOCK
-      #     path: TWISTLOCK/**
-
-      # - name: Clean up Workspace
+      # - name: Push Docker Image
       #   run: |
-      #     rm -rf TWISTLOCK
-      #     rm -rf images/${{ env.NAME }}/Dockerfile
+      #     docker push ${{ env.NEXUS_NP_REPO }}/${{ inputs.IMAGE }}:${{ env.TAG }}
+      #   env:
+      #     TAG: ${{ env.TAG }}
+      #     IMAGE: ${{ inputs.IMAGE }}
+      #     NEXUS_NP_REPO: ${{ env.NEXUS_NP_REPO }}
+
+      - name: Archive Twistlock Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: TWISTLOCK
+          path: TWISTLOCK/**
+
+      - name: Clean up Workspace
+        run: |
+          rm -rf TWISTLOCK
+          rm -rf images/${{ env.NAME }}
     
 
 
