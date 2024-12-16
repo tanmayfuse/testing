@@ -6,19 +6,19 @@ on:
       NAME:
         description: 'Name of the image directory (e.g., app-service)'
         required: true
-        #default: 'example-name'
+        default: 'example-name'
       IMAGE:
         description: 'Docker image name (e.g., my-app)'
         required: true
-        #default: 'example-image'
+        default: 'example-image'
       TAG:
         description: 'Docker image tag (e.g., latest)'
         required: true
-        #default: 'latest'
+        default: 'latest'
       NEW_TAG:
         description: 'New tag for the image (leave empty to reuse TAG)'
         required: false
-        #default: ''
+        default: ''
   # push:
   #   branches:
   #     - main
@@ -30,8 +30,8 @@ jobs:
       NEXUS_NP_REPO: nexus-nonprod-gss.uscis.dhs.gov:8124
       NEXUS_NP_CREDS: ${{ secrets.NEXUS_NP_CREDS }} # store in repo / settings / security / secrets and variables / actions / secrets tab 
       PROXY_URL: "http://preproxy.uscis.dhs.gov:80"
-      https_proxy: "${{ env.PROXY_URL }}"
-      http_proxy: "${{ env.PROXY_URL }}"
+      https_proxy: "$PROXY_URL"
+      http_proxy: "$PROXY_URL"
       no_proxy: "localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24,nexus-gss.uscis.dhs.gov,nexus-nonprod-gss.uscis.dhs.gov,git.uscis.dhs.gov,*.docker.internal,management2.ocp-nonprod.uscis.dhs.gov,vault.uscis.dhs.gov,*.k8s-nonprod.uscis.dhs.gov,*.k8s.uscis.dhs.gov"
 
     steps:
