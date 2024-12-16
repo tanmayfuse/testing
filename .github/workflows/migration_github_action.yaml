@@ -52,8 +52,10 @@ jobs:
           pwd
           mkdir images/$NAME
           cp images/certs/* images/$NAME
+          ls /images/$NAME
           sed -i -e "s/@TAG@/$TAG/g" -e "s/@IMAGE@/$IMAGE/g" images/$NAME/Dockerfile
           mkdir -p TWISTLOCK
+          ls /images/$NAME
           cat /images/$NAME/Dockerfile
         env:
           NAME: ${{ inputs.NAME }}
