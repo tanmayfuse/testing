@@ -76,8 +76,8 @@ jobs:
       
       - name: Build Docker Image
         run: |
-          echo "docker build --no-cache -f images/$NAME/Dockerfile -t $NEXUS_NP_REPO/$IMAGE:$TAG }} images/$NAME"
-          docker build --no-cache -f images/$NAME/Dockerfile -t $NEXUS_NP_REPO/$IMAGE:$TAG }} images/$NAME
+          echo "docker build --no-cache -f images/$NAME/Dockerfile -t $NEXUS_NP_REPO/$IMAGE:$TAG images/$NAME"
+          docker build --no-cache -f images/$NAME/Dockerfile -t $NEXUS_NP_REPO/$IMAGE:$TAG images/$NAME
         env:
           #DOCKER_BUILDKIT: 0
           NAME: ${{ inputs.NAME }}
