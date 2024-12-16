@@ -65,11 +65,7 @@ jobs:
       
       - name: Build Docker Image
         run: |
-          docker build \
-            --no-cache \
-            -f images/$NAME/Dockerfile \
-            -t $NEXUS_NP_REPO/$IMAGE:$NEW_TAG || $TAG }} \
-            images/$NAME
+          docker build --no-cache -f images/$NAME/Dockerfile -t $NEXUS_NP_REPO/$IMAGE:$NEW_TAG || $TAG }} images/$NAME
         env:
           #DOCKER_BUILDKIT: 0
           NAME: ${{ inputs.NAME }}
