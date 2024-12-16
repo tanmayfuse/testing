@@ -6,7 +6,7 @@ on:
       NAME:
         description: 'Name of the image directory (e.g., app-service)'
         required: true
-        default: 'example-name'
+        default: 'example_name'
       IMAGE:
         description: 'Docker image name (e.g., my-app)'
         required: true
@@ -48,14 +48,16 @@ jobs:
       # check NAME, IMAGE, TAG
       - name: Copy Certificate and Update Dockerfile
         run: |
+          echo $NAME
+          mkdir $NAME
           cp images/certs/* images/$NAME
           sed -i -e "s/@TAG@/$TAG/g" -e "s/@IMAGE@/$IMAGE/g" images/$NAME/Dockerfile
           mkdir -p TWISTLOCK
           cat /images/$NAME/Dockerfile
         env:
-          NAME: $NAME
-          IMAGE: $IMAGE
-          TAG: $TAG
+          NAME: ${{ inputs.NAME }}
+          IMAGE: ${{ inputs.IMAGE }}
+          TAG: ${{ inputs.TAG }}
       
       # - name: Build Docker Image
       #   run: |
