@@ -63,15 +63,18 @@ jobs:
           IMAGE: ${{ inputs.IMAGE }}
           TAG: ${{ inputs.TAG }}
       
-      # - name: Build Docker Image
-      #   run: |
-      #     docker build \
-      #       --no-cache \
-      #       -f images/${{ env.NAME }}/Dockerfile \
-      #       -t ${{ env.NEXUS_NP_REPO }}/${{ env.IMAGE }}:${{ env.NEW_TAG || env.TAG }} \
-      #       images/${{ env.NAME }}
-      #   env:
-      #     DOCKER_BUILDKIT: 0
+      - name: Build Docker Image
+        run: |
+          docker build \
+            --no-cache \
+            -f images/$NAME/Dockerfile \
+            -t $NEXUS_NP_REPO/$IMAGE:$NEW_TAG || $TAG }} \
+            images/$NAME
+        env:
+          DOCKER_BUILDKIT: 0
+          NAME: ${{ inputs.NAME }}
+          IMAGE: ${{ inputs.IMAGE }}
+          TAG: ${{ inputs.TAG }}
 
       # - name: Run Prisma Cloud Scan
       #   id: prisma-scan
