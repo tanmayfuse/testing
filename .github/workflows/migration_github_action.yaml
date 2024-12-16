@@ -45,7 +45,7 @@ jobs:
         run:
           echo "NAME ${{ inputs.NAME }} \nIMAGE ${{ inputs.IMAGE }} \nTAG ${{ inputs.TAG }} \nNEW_TAG ${{ inputs.NEW_TAG }} \nNEXUS_NP_REPO $NEXUS_NP_REPO \nNEXUS_NP_CREDS $NEXUS_NP_CREDS \nPROXY_URL $PROXY_URL \nhttps_proxy $PROXY_URL \nhttp_proxy $PROXY_URL \nno_proxy $no_proxy"
       
-      check NAME, IMAGE, TAG
+      # check NAME, IMAGE, TAG
       - name: Copy Certificate and Update Dockerfile
         run: |
           cp images/certs/* images/$NAME
