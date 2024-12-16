@@ -49,7 +49,8 @@ jobs:
       - name: Copy Certificate and Update Dockerfile
         run: |
           echo $NAME
-          mkdir $NAME
+          pwd
+          mkdir images/$NAME
           cp images/certs/* images/$NAME
           sed -i -e "s/@TAG@/$TAG/g" -e "s/@IMAGE@/$IMAGE/g" images/$NAME/Dockerfile
           mkdir -p TWISTLOCK
