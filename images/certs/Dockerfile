@@ -1,2 +1,2 @@
 FROM nginx:latest
-CMD echo @TAG@ @IMAGE@
+CMD echo "@TAG@ @IMAGE@"
