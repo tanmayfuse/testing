@@ -54,9 +54,7 @@ jobs:
 
       - name: print variables
         run:
-          echo "NAME ${{ inputs.NAME }} \n IMAGE ${{ inputs.IMAGE }} \n TAG ${{ inputs.TAG }} \n NEW_TAG ${{ inputs.NEW_TAG }} \n -TAG- $TAG \n NEXUS_NP_REPO $NEXUS_NP_REPO \n NEXUS_NP_CREDS $NEXUS_NP_CREDS \n PROXY_URL $PROXY_URL \n https_proxy $PROXY_URL \n http_proxy $PROXY_URL \n no_proxy $no_proxy"
-      
-
+          echo "NAME ${{ inputs.NAME }} \n IMAGE ${{ inputs.IMAGE }} \n TAG ${{ inputs.TAG }} \n NEW_TAG ${{ inputs.NEW_TAG }} \n -TAG- ${{ env.TAG }} \n NEXUS_NP_REPO $NEXUS_NP_REPO \n NEXUS_NP_CREDS $NEXUS_NP_CREDS \n PROXY_URL $PROXY_URL \n https_proxy $PROXY_URL \n http_proxy $PROXY_URL \n no_proxy $no_proxy"
       
       # check NAME, IMAGE, TAG
       - name: Copy Certificate and Update Dockerfile
