@@ -30,8 +30,8 @@ jobs:
       NEXUS_NP_REPO: nexus-nonprod-gss.uscis.dhs.gov:8124
       NEXUS_NP_CREDS: ${{ secrets.NEXUS_NP_CREDS }} # store in repo / settings / security / secrets and variables / actions / secrets tab 
       PROXY_URL: "http://preproxy.uscis.dhs.gov:80"
-      https_proxy: "$PROXY_URL"
-      http_proxy: "$PROXY_URL"
+      # https_proxy: "$PROXY_URL"
+      # http_proxy: "$PROXY_URL"
       no_proxy: "localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24,nexus-gss.uscis.dhs.gov,nexus-nonprod-gss.uscis.dhs.gov,git.uscis.dhs.gov,*.docker.internal,management2.ocp-nonprod.uscis.dhs.gov,vault.uscis.dhs.gov,*.k8s-nonprod.uscis.dhs.gov,*.k8s.uscis.dhs.gov"
 
     steps:
@@ -49,9 +49,9 @@ jobs:
           echo "NEW_TAG ${{ inputs.NEW_TAG }}"
           echo "NEXUS_NP_REPO ${{ env.NEXUS_NP_REPO }}"
           echo "NEXUS_NP_CREDS ${{ env.NEXUS_NP_CREDS }}"
-          echo "PROXY_URL ${{ env.PROXY_URL }}"
+          echo "PROXY_URL $PROXY_URL"
           echo "https_proxy ${{ env.https_proxy }}"
-          echo "http_proxy ${{ env.PROXY_URL }}"
+          echo "http_proxy $PROXY_URL"
           echo "no_proxy ${{ env.no_proxy }}"
       
       # check NAME, IMAGE, TAG
