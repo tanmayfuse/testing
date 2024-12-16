@@ -84,14 +84,18 @@ jobs:
           IMAGE: ${{ inputs.IMAGE }}
           TAG: ${{ env.TAG }}
 
-      # - name: Run Prisma Cloud Scan
-      #   id: prisma-scan
-      #   run: |
-      #     prisma-cloud-scan-image \
-      #       --docker-address unix:///var/run/docker.sock \
-      #       --ignore-image-build-time true \
-      #       --image ${{ env.NEXUS_NP_REPO }}/${{ env.IMAGE }}:${{ env.NEW_TAG || env.TAG }} \
-      #       --results-file TWISTLOCK/${{ env.IMAGE }}-${{ env.NEW_TAG || env.TAG }}-results.json
+      - name: Run Prisma Cloud Scan
+        id: prisma-scan
+        run: |
+          prisma-cloud-scan-image \
+            --docker-address unix:///var/run/docker.sock \
+            --ignore-image-build-time true \
+            --image $NEXUS_NP_REPO/$IMAGE:$TAG \
+            --results-file TWISTLOCK/$IMAGE-$TAG-results.json
+        env:
+          NAME: ${{ inputs.NAME }}
+          IMAGE: ${{ inputs.IMAGE }}
+          TAG: ${{ env.TAG }}
       
       # - name: Publish Scan Results
       #   run: |
