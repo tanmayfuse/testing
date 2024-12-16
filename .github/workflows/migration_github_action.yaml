@@ -1,0 +1,108 @@
+name: Build, Scan, and Publish Docker Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      NAME:
+        description: 'Name of the image directory (e.g., app-service)'
+        required: true
+        #default: 'example-name'
+      IMAGE:
+        description: 'Docker image name (e.g., my-app)'
+        required: true
+        #default: 'example-image'
+      TAG:
+        description: 'Docker image tag (e.g., latest)'
+        required: true
+        #default: 'latest'
+      NEW_TAG:
+        description: 'New tag for the image (leave empty to reuse TAG)'
+        required: false
+        #default: ''
+  # push:
+  #   branches:
+  #     - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      NEXUS_NP_REPO: nexus-nonprod-gss.uscis.dhs.gov:8124
+      NEXUS_NP_CREDS: ${{ secrets.NEXUS_NP_CREDS }} # store in repo / settings / security / secrets and variables / actions / secrets tab 
+      PROXY_URL: "http://preproxy.uscis.dhs.gov:80"
+      https_proxy: "${{ env.PROXY_URL }}"
+      http_proxy: "${{ env.PROXY_URL }}"
+      no_proxy: "localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24,nexus-gss.uscis.dhs.gov,nexus-nonprod-gss.uscis.dhs.gov,git.uscis.dhs.gov,*.docker.internal,management2.ocp-nonprod.uscis.dhs.gov,vault.uscis.dhs.gov,*.k8s-nonprod.uscis.dhs.gov,*.k8s.uscis.dhs.gov"
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: print variables
+        run:
+          echo "NAME ${{ inputs.NAME }}"
+          echo "IMAGE ${{ inputs.IMAGE }}"
+          echo "TAG ${{ inputs.TAG }}"
+          echo "NEW_TAG ${{ inputs.NEW_TAG }}"
+          echo "NEXUS_NP_REPO ${{ env.NEXUS_NP_REPO }}"
+          echo "NEXUS_NP_CREDS ${{ env.NEXUS_NP_CREDS }}"
+          echo "PROXY_URL ${{ env.PROXY_URL }}"
+          echo "https_proxy ${{ env.https_proxy }}"
+          echo "http_proxy ${{ env.PROXY_URL }}"
+          echo "no_proxy ${{ env.no_proxy }}"
+      
+      # check NAME, IMAGE, TAG
+      # - name: Copy Certificate and Update Dockerfile
+      #   run: |
+      #     cp images/certs/* images/$NAME
+      #     sed -i -e "s/@TAG@/$TAG/g" -e "s/@IMAGE@/$IMAGE/g" images/$NAME/Dockerfile
+      #     mkdir -p TWISTLOCK
+      #   env:
+      #     NAME: ${{ env.NAME }}
+      #     IMAGE: ${{ env.IMAGE }}
+      #     TAG: ${{ env.TAG }}
+      
+      # - name: Build Docker Image
+      #   run: |
+      #     docker build \
+      #       --no-cache \
+      #       -f images/${{ env.NAME }}/Dockerfile \
+      #       -t ${{ env.NEXUS_NP_REPO }}/${{ env.IMAGE }}:${{ env.NEW_TAG || env.TAG }} \
+      #       images/${{ env.NAME }}
+      #   env:
+      #     DOCKER_BUILDKIT: 0
+
+      # - name: Run Prisma Cloud Scan
+      #   id: prisma-scan
+      #   run: |
+      #     prisma-cloud-scan-image \
+      #       --docker-address unix:///var/run/docker.sock \
+      #       --ignore-image-build-time true \
+      #       --image ${{ env.NEXUS_NP_REPO }}/${{ env.IMAGE }}:${{ env.NEW_TAG || env.TAG }} \
+      #       --results-file TWISTLOCK/${{ env.IMAGE }}-${{ env.NEW_TAG || env.TAG }}-results.json
+      
+      # - name: Publish Scan Results
+      #   run: |
+      #     prisma-cloud-publish \
+      #       --results-file-pattern TWISTLOCK/${{ env.IMAGE }}-${{ env.NEW_TAG || env.TAG }}-results.json
+
+      # - name: Login to Nexus
+      #   run: echo ${{ secrets.NEXUS_NP_CREDS }} | docker login ${{ env.NEXUS_NP_REPO }} --username ${{ secrets.NEXUS_USERNAME }} --password-stdin
+
+      # - name: Archive Twistlock Results
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: TWISTLOCK
+      #     path: TWISTLOCK/**
+
+      # - name: Clean up Workspace
+      #   run: |
+      #     rm -rf TWISTLOCK
+      #     rm -rf images/${{ env.NAME }}/Dockerfile
+    
+
+
+      
