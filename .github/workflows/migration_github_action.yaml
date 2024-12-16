@@ -71,7 +71,7 @@ jobs:
             -t $NEXUS_NP_REPO/$IMAGE:$NEW_TAG || $TAG }} \
             images/$NAME
         env:
-          DOCKER_BUILDKIT: 0
+          #DOCKER_BUILDKIT: 0
           NAME: ${{ inputs.NAME }}
           IMAGE: ${{ inputs.IMAGE }}
           TAG: ${{ inputs.TAG }}
