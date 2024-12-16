@@ -38,8 +38,8 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
       
-      - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      # - name: Setup Docker Buildx
+      #   uses: docker/setup-buildx-action@v3
 
       - name: print variables
         run:
