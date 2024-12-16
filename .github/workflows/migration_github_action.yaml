@@ -38,12 +38,25 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
       
-      # - name: Setup Docker Buildx
-      #   uses: docker/setup-buildx-action@v3
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Set Effective TAG Value
+        id: set-tag
+        run: |
+          if [ -n "${{ inputs.NEW_TAG }}" ]; then
+            echo "NEW_TAG is set. Using NEW_TAG as TAG."
+            echo "TAG=${{ inputs.NEW_TAG }}" >> $GITHUB_ENV
+          else
+            echo "NEW_TAG is not set. Using TAG as provided."
+            echo "TAG=${{ inputs.TAG }}" >> $GITHUB_ENV
+          fi
 
       - name: print variables
         run:
-          echo "NAME ${{ inputs.NAME }} \nIMAGE ${{ inputs.IMAGE }} \nTAG ${{ inputs.TAG }} \nNEW_TAG ${{ inputs.NEW_TAG }} \nNEXUS_NP_REPO $NEXUS_NP_REPO \nNEXUS_NP_CREDS $NEXUS_NP_CREDS \nPROXY_URL $PROXY_URL \nhttps_proxy $PROXY_URL \nhttp_proxy $PROXY_URL \nno_proxy $no_proxy"
+          echo "NAME ${{ inputs.NAME }} \n IMAGE ${{ inputs.IMAGE }} \n TAG ${{ inputs.TAG }} \n NEW_TAG ${{ inputs.NEW_TAG }} \n -TAG- $TAG \n NEXUS_NP_REPO $NEXUS_NP_REPO \n NEXUS_NP_CREDS $NEXUS_NP_CREDS \n PROXY_URL $PROXY_URL \n https_proxy $PROXY_URL \n http_proxy $PROXY_URL \n no_proxy $no_proxy"
+      
+
       
       # check NAME, IMAGE, TAG
       - name: Copy Certificate and Update Dockerfile
@@ -71,7 +84,7 @@ jobs:
           #DOCKER_BUILDKIT: 0
           NAME: ${{ inputs.NAME }}
           IMAGE: ${{ inputs.IMAGE }}
-          TAG: ${{ inputs.TAG }}
+          TAG: $TAG
 
       # - name: Run Prisma Cloud Scan
       #   id: prisma-scan
