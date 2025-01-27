@@ -15,7 +15,7 @@ jobs:
         uses: actions/download-artifact@v4.1.8
         with:
           name: random-values
-          github_token: ${{ github.token }}
+          github-token: ${{ github.token }}
           repository: ${{ github.repository }}
           run-id: 12991355666
 
