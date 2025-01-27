@@ -1,0 +1,22 @@
+name: Consume CSV File
+
+on:
+  workflow_run:
+    workflows:
+      - Create CSV File
+    types:
+      - completed
+
+jobs:
+  consume-csv:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download CSV artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: random-values
+
+      - name: Print CSV contents
+        run: |
+          echo "CSV contents:"
+          cat random_values.csv
